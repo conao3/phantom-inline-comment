@@ -79,7 +79,10 @@
   :global t
   :lighter " PicAS"
   (if phantom-inline-comment-auto-save-mode
-      (add-hook 'kill-emacs-hook 'phantom-inline-comment-save-data)
+      (progn
+        (add-hook 'kill-buffer-hook 'phantom-inline-comment-save-data)
+        (add-hook 'kill-emacs-hook 'phantom-inline-comment-save-data))
+    (remove-hook 'kill-buffer-hook #'phantom-inline-comment-save-data)
     (remove-hook 'kill-emacs-hook #'phantom-inline-comment-save-data)))
 
 (defun phantom-show-mode nil
