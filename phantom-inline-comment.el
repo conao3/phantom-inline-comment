@@ -45,6 +45,7 @@
 (defvar phantom-inline-comment-edit-buffer "*phantom-inline-comment-edit*")
 (defvar phantom-inline-comment-show-buffer "*phantom-inline-comments*")
 
+(defvar phantom-inline-comment-saved-lock nil)
 (defvar phantom-saved-file
   (locate-user-emacs-file "phantom-inline-comments" ".phantom-inline-comments"))
 
@@ -354,7 +355,10 @@
 
 (defun phantom-inline-comment--save-data ()
   "Save phantom-inline-comments from `inline--phantom-comments'."
-  (pic--dump-comment-data (pic--convert-overlay-data inline--phantom-comments)))
+  (unless phantom-inline-comment-saved-lock
+    (setq phantom-inline-comment-saved-lock t)
+    (pic--dump-comment-data (pic--convert-overlay-data inline--phantom-comments))
+    (setq phantom-inline-comment-saved-lock nil)))
 
 (defun phantom-inline-comment--restore-data ()
   "Push stored pahntom-inline-comments into `inline--phantom-comments'."
